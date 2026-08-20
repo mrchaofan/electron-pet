@@ -1,1 +1,1 @@
-dist.zip filter=lfs diff=lfs merge=lfs -text
+build/electron-zips/electron-v44.0.0-nightly.20260612-darwin-arm64.zip filter=lfs diff=lfs merge=lfs -text
