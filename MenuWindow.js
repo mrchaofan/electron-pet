@@ -54,8 +54,8 @@ class MenuWindow extends electron.BaseWindow {
     this.contentView.setBorderRadius(8);
     this.contentView.setMasksToBounds(true);
     this.on("blur", () => this.handleBlur());
-    this.contentView.on("mouse-entered", () => this.cancelClose());
-    this.contentView.on("mouse-exited", () => this.scheduleClose());
+    this.contentView.on("mouse-entered", () => this.handleMouseEntered());
+    this.contentView.on("mouse-exited", () => this.handleMouseExited());
   }
 
   addMenuItems(items = []) {
@@ -86,6 +86,7 @@ class MenuWindow extends electron.BaseWindow {
   }
 
   showSubMenu(subMenuConfig, menuItemView) {
+    this.getRootMenu().cancelCloseTree();
     if (this.isCurrentSubMenu(subMenuConfig)) {
       this.subMenuWindow.cancelClose();
       this.subMenuWindow.moveTop();
@@ -145,8 +146,30 @@ class MenuWindow extends electron.BaseWindow {
     }
   }
 
+  handleMouseEntered() {
+    this.getRootMenu().cancelCloseTree();
+  }
+
+  handleMouseExited() {
+    this.getRootMenu().scheduleCloseTree();
+  }
+
+  getRootMenu() {
+    return this.parentMenu ? this.parentMenu.getRootMenu() : this;
+  }
+
+  scheduleCloseTree() {
+    this.scheduleClose();
+    this.subMenuWindow?.scheduleCloseTree();
+  }
+
+  cancelCloseTree() {
+    this.cancelClose();
+    this.subMenuWindow?.cancelCloseTree();
+  }
+
   scheduleClose() {
-    if (!this.autoCloseOnMouseExit) return;
+    if (!this.parentMenu || !this.autoCloseOnMouseExit) return;
 
     this.cancelClose();
     this.closeTimer = setTimeout(() => {
