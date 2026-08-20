@@ -105,7 +105,9 @@ class MenuWindow extends electron.BaseWindow {
     this.subMenuSource = subMenuConfig;
 
     subMenuWindow.on("closed", () => this.clearSubMenuReference(subMenuWindow));
-    subMenuWindow.setPosition(...this.getSubMenuPosition(menuItemView));
+    subMenuWindow.setPosition(
+      ...this.getSubMenuPosition(menuItemView, subMenuWindow),
+    );
     subMenuWindow.moveTop();
     subMenuWindow.focus();
   }
@@ -114,15 +116,25 @@ class MenuWindow extends electron.BaseWindow {
     return Array.isArray(config) ? { items: config } : config;
   }
 
-  getSubMenuPosition(menuItemView) {
+  getSubMenuPosition(menuItemView, subMenuWindow) {
     const windowBounds = this.getBounds();
     const menuBounds = this.menuView.getBounds();
     const itemBounds = menuItemView.getBounds();
+    const itemX = windowBounds.x + menuBounds.x + itemBounds.x;
+    const itemY = windowBounds.y + menuBounds.y + itemBounds.y;
+    const rightX = itemX + itemBounds.width;
+    const subMenuWidth = subMenuWindow.menuView.getPreferredSize().width;
+    const display = electron.screen.getDisplayNearestPoint({
+      x: rightX,
+      y: itemY,
+    });
+    const workAreaRight = display.workArea.x + display.workArea.width;
+    const x =
+      rightX + subMenuWidth <= workAreaRight
+        ? rightX
+        : Math.max(display.workArea.x, itemX - subMenuWidth);
 
-    return [
-      windowBounds.x + menuBounds.x + itemBounds.x + itemBounds.width,
-      windowBounds.y + menuBounds.y + itemBounds.y,
-    ];
+    return [x, itemY];
   }
 
   isCurrentSubMenu(config) {
