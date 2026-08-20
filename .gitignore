@@ -1,2 +1,5 @@
 .DS_Store
 /Electron.app/
+/node_modules/
+/dist/
+/build/electron-zips/

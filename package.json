@@ -1,5 +1,12 @@
 {
     "name": "super-electro",
+    "version": "1.0.0",
     "main": "main.js",
-    "author": "mrchaofan"
+    "author": "mrchaofan",
+    "scripts": {
+        "build:mac": "node scripts/build-mac.js"
+    },
+    "devDependencies": {
+        "@electron/packager": "20.3.0"
+    }
 }

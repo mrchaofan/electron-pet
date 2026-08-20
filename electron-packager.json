@@ -1,0 +1,25 @@
+{
+    "dir": ".",
+    "out": "dist",
+    "overwrite": true,
+    "platform": "darwin",
+    "arch": "arm64",
+    "electronVersion": "44.0.0-nightly.20260612",
+    "electronZipDir": "build/electron-zips",
+    "name": "super-electro",
+    "appBundleId": "com.mrchaofan.super-electro",
+    "ignore": [
+        "^/build($|/)",
+        "^/scripts($|/)",
+        "^/dist($|/)",
+        "^/dist\\.zip$",
+        "^/node_modules($|/)",
+        "^/package-lock\\.json$",
+        "^/electron-packager\\.json$",
+        "^/electron\\.d\\.ts$",
+        "^/\\.git($|/)",
+        "^/\\.gitignore$",
+        "^/\\.gitattributes$",
+        "^/\\.DS_Store$"
+    ]
+}
