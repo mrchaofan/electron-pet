@@ -51,20 +51,22 @@ class AppMenu {
   }
 
   handleMenuClick(item) {
-    this.close();
-
     if (item.text === "打开 mimo") {
+      this.close();
       this.MimoWindow.getInstance().show();
       return;
     }
     if (item.text === "GitHub") {
+      this.close();
       electron.shell.openExternal("https://github.com/mrchaofan");
       return;
     }
     if (item.text === "小红书") {
+      this.close();
       electron.shell.openExternal(
         "https://www.xiaohongshu.com/user/profile/615d7c9d0000000002020fc6",
       );
+      return;
     }
   }
 }
