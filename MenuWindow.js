@@ -153,9 +153,20 @@ class MenuWindow extends electron.BaseWindow {
   }
 
   handleBlur() {
-    if (!this.hasVisibleSubMenu()) {
-      this.closeMenu();
-    }
+    const rootMenu = this.getRootMenu();
+
+    setTimeout(() => {
+      if (!rootMenu.isDestroyed() && !rootMenu.hasFocusedMenuTree()) {
+        rootMenu.closeMenu();
+      }
+    }, 0);
+  }
+
+  hasFocusedMenuTree() {
+    return (
+      (!this.isDestroyed() && this.isFocused()) ||
+      Boolean(this.subMenuWindow?.hasFocusedMenuTree())
+    );
   }
 
   handleMouseEntered() {
